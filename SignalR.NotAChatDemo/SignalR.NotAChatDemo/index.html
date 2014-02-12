@@ -1,0 +1,25 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title></title>
+</head>
+    <body>
+        <ul id="messages"></ul>
+
+        <script src="Scripts/jquery-1.6.4.js"></script>
+        <script src="Scripts/jquery.signalR-2.0.2.js"></script>
+        <script src="signalr/hubs"></script>
+
+        <script>
+            $(function() {
+                var timeHub = $.connection.time;
+                timeHub.client.printTime = (function(timeNow) {
+                    $('#messages').append('<li>' + timeNow + '</li>');
+                });
+                $.connection.hub.start().done(function() {
+                    timeHub.server.tellMeTheTime();
+                });
+            });
+        </script>
+    </body>
+</html>
