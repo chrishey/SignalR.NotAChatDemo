@@ -1,0 +1,36 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title></title>
+</head>
+    <body>
+        <span>First name</span>
+        <input type="text" id="first-name" />
+        <span>Last name</span>
+        <input type="text" id="last-name" />
+        <button>Send!</button>
+
+        <ul id="messages"></ul>
+
+        <script src="Scripts/jquery-1.6.4.js"></script>
+        <script src="Scripts/jquery.signalR-2.0.2.js"></script>
+        <script src="signalr/hubs"></script>
+
+        <script>
+            $(function() {
+                var nameHub = $.connection.foo;
+                nameHub.client.printName = (function(message) {
+                    $('#messages').append('<li>' + message + '</li>');
+                });
+                $.connection.hub.start();
+
+                $('button').click(function(e) {
+                    var firstNameVal = $('#first-name').val();
+                    var lastNameVal = $('#last-name').val();
+
+                    nameHub.server.enterName({firstName: firstNameVal, lastName: lastNameVal});
+                });
+            });
+        </script>
+    </body>
+</html>
